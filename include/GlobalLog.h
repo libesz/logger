@@ -12,10 +12,10 @@
 namespace Logger {
   extern Log *globalLog;
 }
-using namespace Logger;
 
-#define STARTLOG(target, logLevel) globalLog = new Log(target, logLevel)
-#define STOPLOG() delete globalLog
-#define LOG(text) globalLog->write(Severity::INFO, std::string(__FILE__), __LINE__, std::string(text))
+#define STARTLOG(target, logLevel) Logger::globalLog = new Logger::Log(target, logLevel)
+#define STOPLOG() delete Logger::globalLog
+#define LOGLEVEL(newLevel) Logger::globalLog->setLogLevel(newLevel)
+#define LOG(text) Logger::globalLog->write(Logger::Severity::INFO, std::string(__FILE__), __LINE__, std::string(text))
 
 #endif /* GLOBALLOG_H_ */
