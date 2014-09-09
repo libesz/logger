@@ -28,7 +28,7 @@ class Log {
   Severity logLevel;
 public:
   Log(LogTarget &newTarget, Severity logLevel);
-  void write(Severity severity, std::string file, std::string line, std::string logText);
+  void write(Severity severity, std::string file, unsigned line, std::string logText);
   virtual ~Log();
   void setLogLevel(Severity newLogLevel);
 };

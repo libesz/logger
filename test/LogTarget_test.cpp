@@ -5,7 +5,7 @@
  *      Author: libesz
  */
 
-#include "/home/libesz/workspace/Logger/include/LogTarget.h"
+#include <LogTarget.h>
 
 namespace Logger {
 

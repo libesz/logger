@@ -5,7 +5,7 @@
  *      Author: libesz
  */
 
-#include "/home/libesz/workspace/Logger/include/Log.h"
+#include <Log.h>
 
 namespace Logger {
 

@@ -13,10 +13,9 @@ Log::Log(LogTarget& newTarget, Severity newSeverity): target(newTarget), logLeve
   target.open();
 }
 
-void Log::write(Severity severity, std::string file, std::string line,
-    std::string logText) {
+void Log::write(Severity severity, std::string file, unsigned line, std::string logText) {
   if(severity >= logLevel)
-    target.write(line);
+    target.write(logText);
 }
 
 void Log::setLogLevel(Severity newLogLevel) {
