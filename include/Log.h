@@ -23,12 +23,13 @@ enum class Severity {
 };
 
 class Log {
+  const unsigned bufferSize = 256;
   Log();
   LogTarget &target;
   Severity logLevel;
 public:
   Log(LogTarget &newTarget, Severity logLevel);
-  void write(Severity severity, std::string file, unsigned line, std::string logText);
+  void write(Severity severity, std::string file, unsigned line, std::string logText, ...);
   virtual ~Log();
   void setLogLevel(Severity newLogLevel);
 };
