@@ -5,8 +5,8 @@
  *      Author: libesz
  */
 
-#ifndef GLOBALLOG_H_
-#define GLOBALLOG_H_
+#ifndef LOGGER_H_
+#define LOGGER_H_
 
 #include <Log.h>
 namespace Logger {
@@ -27,4 +27,4 @@ namespace Logger {
 #define ERR(text,...) Logger::globalLog->write(Logger::Severity::ERR,std::string(FILENAME),__LINE__,std::string(text),##__VA_ARGS__)
 #define CRIT(text,...) Logger::globalLog->write(Logger::Severity::CRIT,std::string(FILENAME),__LINE__,std::string(text),##__VA_ARGS__)
 
-#endif /* GLOBALLOG_H_ */
+#endif /* LOGGER_H_ */
