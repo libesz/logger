@@ -6,7 +6,7 @@
  */
 
 
-#include <Logger.h>
+#include <Log.h>
 
 namespace Logger {
   Log *globalLog;
