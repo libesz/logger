@@ -8,6 +8,9 @@
 #include <Log.h>
 #include <cstdio>
 #include <cstdarg>
+#include <iostream>
+#include <ctime>
+#include <cstring>
 
 namespace Logger {
 
@@ -17,13 +20,20 @@ Log::Log(LogTarget& newTarget, Severity newSeverity): target(newTarget), logLeve
 
 void Log::write(Severity severity, std::string file, unsigned line, std::string logText, ...) {
   if(severity >= logLevel) {
-    char buffer[bufferSize];
+    std::string str = getTimeStamp();
+    char logBuffer[bufferSize];
     va_list args;
     va_start (args, logText);
-    unsigned size = vsnprintf (buffer, bufferSize, logText.c_str(), args);
+    unsigned logSize = vsnprintf (logBuffer, bufferSize, logText.c_str(), args);
     va_end (args);
-    std::string str(buffer);
-    str.resize(size);
+    str += " ";
+    str += file;
+    str += " (";
+    str += std::to_string(line);
+    str += "): ";
+    unsigned headerSize = str.size();
+    str += std::string(logBuffer);
+    str.resize(headerSize + logSize);
     target.write(str);
   }
 }
@@ -34,6 +44,20 @@ void Log::setLogLevel(Severity newLogLevel) {
 
 Log::~Log() {
   target.close();
+}
+
+
+std::string Log::getTimeStamp() {
+  time_t rawtime;
+  struct tm * timeinfo;
+  char buffer[80];
+  memset(buffer, 0, 80);
+
+  time (&rawtime);
+  timeinfo = localtime(&rawtime);
+
+  strftime(buffer,80,"%d-%m-%Y %H:%M:%S",timeinfo);
+  return std::string(buffer);
 }
 
 } /* namespace Logger */

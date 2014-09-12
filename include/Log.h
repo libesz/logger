@@ -27,6 +27,7 @@ class Log {
   Log();
   LogTarget &target;
   Severity logLevel;
+  std::string getTimeStamp();
 public:
   Log(LogTarget &newTarget, Severity logLevel);
   void write(Severity severity, std::string file, unsigned line, std::string logText, ...);
