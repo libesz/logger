@@ -92,7 +92,7 @@ void Log::write(Severity severity, std::string file, unsigned line, std::string 
         if(resultSize<resultSize2)
           throw std::out_of_range("vsnprintf result is too long");
       } else {
-        target.write(getTimeStamp() + std::string(" TRUNKATED LOG:"));
+        target.write(getTimeStamp() + std::string(" TRUNCATED LOG:"));
       }
     }
     ss << std::string(logBuffer.get());

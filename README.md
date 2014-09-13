@@ -41,7 +41,7 @@ int main() {
 2014-09-13 15:15:24 LOG OPEN
 2014-09-13 15:15:24  INFO       main2.cpp ( 10): this is a log with a number: 42
 2014-09-13 15:15:24   ERR       main2.cpp ( 11): this is an error with two numbers: 42, 2a
-2014-09-13 15:15:24 TRUNKATED LOG:
+2014-09-13 15:15:24 TRUNCATED LOG:
 2014-09-13 15:15:24  INFO       main2.cpp ( 13): long string1: 'aaaaaaaaaaaa
 2014-09-13 15:15:24  INFO       main2.cpp ( 15): long string2: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
 2014-09-13 15:15:24 LOG CLOSE
