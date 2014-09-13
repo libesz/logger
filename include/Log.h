@@ -43,18 +43,20 @@ enum class Severity {
 std::ostream& operator<<(std::ostream &out, Severity s) throw(std::runtime_error);
 
 class Log {
-  const unsigned logBufferSize = 128;
+  const unsigned logBufferPadSize = 10;
   const unsigned maxFileNamePadding = 15;
   const unsigned maxLineNumPadding = 3;
   Log();
   LogTarget &target;
   Severity logLevel;
+  bool allowExpandIfTooLong;
   std::string getTimeStamp();
 public:
   Log(LogTarget &newTarget, Severity logLevel);
-  void write(Severity severity, std::string file, unsigned line, std::string logText, ...);
+  void write(Severity severity, std::string file, unsigned line, std::string logText, ...) throw(std::out_of_range);
   virtual ~Log();
   void setLogLevel(Severity newLogLevel);
+  void setAllowExpandIfTooLong(bool allowExpandIfTooLong);
 };
 
 } /* namespace Logger */

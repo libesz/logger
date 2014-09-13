@@ -29,6 +29,7 @@
 #include <cstring>
 #include <sstream>
 #include <iomanip>
+#include <memory>
 
 namespace Logger {
 
@@ -58,12 +59,15 @@ std::ostream& operator<<(std::ostream &out, Severity s) throw(std::runtime_error
   return out;
 }
 
-Log::Log(LogTarget& newTarget, Severity newSeverity): target(newTarget), logLevel(newSeverity) {
+Log::Log(LogTarget& newTarget, Severity newSeverity):
+    target(newTarget),
+    logLevel(newSeverity),
+    allowExpandIfTooLong(false) {
   target.open();
   target.write(getTimeStamp() + std::string(" LOG OPEN"));
 }
 
-void Log::write(Severity severity, std::string file, unsigned line, std::string logText, ...) {
+void Log::write(Severity severity, std::string file, unsigned line, std::string logText, ...) throw(std::out_of_range) {
   if(severity >= logLevel) {
     std::stringstream ss;
 
@@ -72,12 +76,26 @@ void Log::write(Severity severity, std::string file, unsigned line, std::string 
     ss << std::setw (maxFileNamePadding) << file;
     ss << " (" << std::setw (maxLineNumPadding) << std::to_string(line) << "): ";
 
-    char logBuffer[logBufferSize];
+    //char *logBuffer = new char[logText.size() + logBufferPadSize];
+    int bufferSize = logText.size() + logBufferPadSize;
+    std::unique_ptr<char[]> logBuffer(new char[bufferSize]);
     va_list args;
-    va_start (args, logText);
-    vsnprintf (logBuffer, logBufferSize, logText.c_str(), args);
+    va_start(args, logText);
+    int resultSize = vsnprintf(logBuffer.get(), bufferSize, logText.c_str(), args);
     va_end (args);
-    ss << std::string(logBuffer);
+    if(bufferSize<resultSize) {
+      if(allowExpandIfTooLong) {
+        logBuffer.reset(new char[resultSize+1]);
+        va_start(args, logText);
+        int resultSize2 = vsnprintf(logBuffer.get(), resultSize+1, logText.c_str(), args);
+        va_end(args);
+        if(resultSize<resultSize2)
+          throw std::out_of_range("vsnprintf result is too long");
+      } else {
+        target.write(getTimeStamp() + std::string(" TRUNKATED LOG:"));
+      }
+    }
+    ss << std::string(logBuffer.get());
     target.write(ss.str());
   }
 }
@@ -87,6 +105,10 @@ void Log::setLogLevel(Severity newLogLevel) {
   std::stringstream ss;
   ss << getTimeStamp() << " NEW LOGLEVEL: " << newLogLevel;
   target.write(ss.str());
+}
+
+void Log::setAllowExpandIfTooLong(bool newAllowExpandIfTooLong) {
+  allowExpandIfTooLong = newAllowExpandIfTooLong;
 }
 
 Log::~Log() {

@@ -36,6 +36,7 @@ namespace Logger {
 #define STARTLOG(target, logLevel) Logger::globalLog = new Logger::Log(target, logLevel)
 #define STOPLOG() delete Logger::globalLog
 #define LOGLEVEL(newLevel) Logger::globalLog->setLogLevel(newLevel)
+#define EXPANDABLE(v) Logger::globalLog->setAllowExpandIfTooLong(v)
 #define TRACE(text,...) Logger::globalLog->write(Logger::Severity::TRACE,std::string(FILENAME),__LINE__,std::string(text),##__VA_ARGS__)
 #define DEBUG(text,...) Logger::globalLog->write(Logger::Severity::DEBUG,std::string(FILENAME),__LINE__,std::string(text),##__VA_ARGS__)
 #define LOG(text,...) Logger::globalLog->write(Logger::Severity::INFO,std::string(FILENAME),__LINE__,std::string(text),##__VA_ARGS__)
