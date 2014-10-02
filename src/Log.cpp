@@ -62,15 +62,17 @@ std::ostream& operator<<(std::ostream &out, Severity s) throw(std::runtime_error
 Log::Log(LogTarget& newTarget, Severity newSeverity):
     target(newTarget),
     logLevel(newSeverity),
-    allowExpandIfTooLong(false) {
+    allowExpandIfTooLong(false),
+    logNum(0) {
   target.open();
   target.write(getTimeStamp() + std::string(" LOG OPEN"));
 }
 
 void Log::write(Severity severity, std::string file, unsigned line, std::string logText, ...) throw(std::out_of_range) {
   if(severity >= logLevel) {
+    std::unique_lock<std::mutex> lock(write_mutex);
     std::stringstream ss;
-
+    ss << std::setfill('0') << std::setw(logNumPadding) << logNum++ << std::setfill(' ') << "|";
     ss << getTimeStamp();
     ss << " " << std::setw(5) << severity << " ";
     ss << std::setw (maxFileNamePadding) << file;
