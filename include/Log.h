@@ -44,11 +44,10 @@ enum class Severity {
 std::ostream& operator<<(std::ostream &out, Severity s) throw(std::runtime_error);
 
 class Log {
-  const unsigned logBufferPadSize = 10;
-  const unsigned logNumPadding = 7;
-  const unsigned maxFileNamePadding = 15;
-  const unsigned maxLineNumPadding = 3;
-  Log();
+  const static unsigned logBufferPadSize = 20;
+  const static unsigned logNumPadding = 7;
+  const static unsigned maxFileNamePadding = 15;
+  const static unsigned maxLineNumPadding = 3;
   LogTarget &target;
   Severity logLevel;
   bool allowExpandIfTooLong;
@@ -56,6 +55,9 @@ class Log {
   std::mutex write_mutex;
   std::string getTimeStamp();
 public:
+  Log() = delete;
+  Log(const Log& rhs) = delete;
+  Log operator=(const Log& rhs) = delete;
   Log(LogTarget &newTarget, Severity logLevel);
   void write(Severity severity, std::string file, unsigned line, std::string logText, ...) throw(std::out_of_range);
   virtual ~Log();

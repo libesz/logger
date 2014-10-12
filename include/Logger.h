@@ -33,8 +33,6 @@ namespace Logger {
 
 #define FILENAME (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
-//#define STARTLOG(target, logLevel) Logger::globalLog = new Logger::Log(target, logLevel)
-//#define STOPLOG() delete Logger::globalLog
 #define LOGLEVEL(newLevel) Logger::getGlobalLog().setLogLevel(newLevel)
 #define EXPANDABLE(v) Logger::getGlobalLog().setAllowExpandIfTooLong(v)
 #define TRACE(text,...) Logger::getGlobalLog().write(Logger::Severity::TRACE,std::string(FILENAME),__LINE__,std::string(text),##__VA_ARGS__)
