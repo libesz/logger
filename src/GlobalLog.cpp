@@ -28,6 +28,7 @@
 
 namespace Logger {
 Log &getGlobalLog() {
+  static std::ios_base::Init gInitIostreams; //to ensure that cout is built before we use it
   static StreamLogTarget globalLogTarget(std::cout);
   static Log globalLog(globalLogTarget, Severity::INFO);
   return globalLog;
