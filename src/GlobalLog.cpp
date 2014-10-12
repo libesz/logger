@@ -23,9 +23,13 @@
 
 
 #include <Log.h>
+#include <StreamLogTarget.h>
+#include <iostream>
 
 namespace Logger {
-  Log *globalLog;
+Log &getGlobalLog() {
+  static StreamLogTarget globalLogTarget(std::cout);
+  static Log globalLog(globalLogTarget, Severity::INFO);
+  return globalLog;
 }
-
-
+}
